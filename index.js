@@ -1,7 +1,19 @@
 const express= require('express');
-const app=express();
-// const cors=require('cors')
+const cors=require('cors');
+const userRouter=require('./routes/userRoutes');
+const communityRouter=require('./routes/communityRoutes');
+const postRouter=require('./routes/postRoutes');
+const logger = require('./middleware/logger');
 
-app.listen(5000,()=>[
+const app=express();
+
+app.use(cors({origin: "*"}));
+app.use(logger);
+
+app.use("/user",userRouter);
+app.use("/community",communityRouter);
+app.use("/posts",postRouter);
+
+app.listen(5000,()=>{
     console.log('server running .....')
-]);
+});
