@@ -20,7 +20,7 @@ model User {
   password    String
   communities Community[]  @relation("Owner") 
   memberships Membership[] 
-  posts       Post[]
+  posts       Post[] 
 }
 
 model Community {
