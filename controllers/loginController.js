@@ -34,13 +34,14 @@ const userLogin = async (req,res) => {
 
 const userRegister = async(req,res) =>{
     try{
-        const {username, email, password}=req.body;
+        const {username, email, password, profileImage}=req.body;
         const hashPass = await bcrypt.hash(password,10)
         const user = await prisma.user.create({
             data : {
                 username,
                 email,
                 password : hashPass,
+                profileImage
             }
         })
         return res.status(201).json(user);
@@ -50,5 +51,24 @@ const userRegister = async(req,res) =>{
     }
 }
 
+const updatePfp = async(req,res) =>{
+    try{
+        const {profileImage} = req.body;
+        if (!profileImage) 
+            return res.status(400).json({ error: "No profile image provided" });
+        const user = await prisma.user.update({
+            where : {
+                id : req.user.userId
+            },
+            data : {
+                profileImage 
+            }
+        });
+        return res.status(200).json(user);
+    }
+    catch(err){
+        return res.status(400).json({error : err.message});
+    }
+}
 
-module.exports={userLogin,userRegister}
+module.exports={userLogin,userRegister,updatePfp}

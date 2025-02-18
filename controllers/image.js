@@ -4,6 +4,9 @@ const fs = require('fs');
 const SftpClient = require('ssh2-sftp-client');
 
 const sftp = new SftpClient();
+const IP= process.env.IP;
+const username=process.env.username;
+const password=process.env.password;
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -22,15 +25,15 @@ const upload = multer({ storage });
 const uploadToVM = async (localFilePath, remoteFilePath) => {
     try {
         await sftp.connect({
-            host: '192.168.72.117',
+            host: IP,
             port: 22,
-            username: 'abishek',  
-            password: 'pashword'  
+            username,  
+            password
         });
 
         await sftp.put(localFilePath, remoteFilePath);
         await sftp.end();
-        return `http://192.168.72.117/uploads/${path.basename(remoteFilePath)}`;
+        return `http://${IP}/uploads/${path.basename(remoteFilePath)}`;
     } catch (err) {
         console.error('SFTP Upload Error:', err);
         throw new Error('Failed to upload file to storage VM');

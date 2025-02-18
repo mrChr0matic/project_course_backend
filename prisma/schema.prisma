@@ -18,9 +18,11 @@ model User {
   username    String       @unique
   email       String       @unique
   password    String
+  profileImage String?      
   communities Community[]  @relation("Owner") 
   memberships Membership[] 
   posts       Post[] 
+  votes       Vote[]       
 }
 
 model Community {
@@ -30,6 +32,8 @@ model Community {
   owner     User        @relation("Owner", fields: [ownerId], references: [id])
   posts     Post[]
   members   Membership[]
+  banner    String?     
+  icon      String?     
 }
 
 model Post {
@@ -41,6 +45,10 @@ model Post {
   communityId Int
   community   Community   @relation(fields: [communityId], references: [id])
   createdAt   DateTime    @default(now())
+  image       String?     
+  votes       Vote[]      
+  upvotes     Int         @default(0)   
+  downvotes   Int         @default(0)   
 }
 
 model Membership {
@@ -51,3 +59,17 @@ model Membership {
   
   @@id([userId, communityId]) 
 }
+
+model Vote {
+  id      Int     @id @default(autoincrement())
+  userId  Int
+  postId  Int
+  voteType String  
+
+  user  User @relation(fields: [userId], references: [id])
+  post  Post @relation(fields: [postId], references: [id])
+
+  @@unique([userId, postId])  
+}
+
+

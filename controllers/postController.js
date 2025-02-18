@@ -22,4 +22,22 @@ const addPost = async (req,res) =>{
     }
 }
 
-module.exports={addPost}
+const getPosts = async (req,res) =>{
+    try{
+        const posts= await prisma.post.findMany({
+            orderBy : {
+                createdAt : 'desc'
+            },
+            include: {
+                author: { select: { id: true, username: true } }, 
+                community: { select: { id: true, name: true } },
+            }
+        });
+        return res.status(200).json(posts);
+    }
+    catch(err){
+        return res.status(400).json({error : err.message});
+    }
+}
+
+module.exports={addPost,getPosts}
