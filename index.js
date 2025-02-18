@@ -5,9 +5,12 @@ const communityRouter=require('./routes/communityRoutes');
 const postRouter=require('./routes/postRoutes');
 const logger = require('./middleware/logger');
 
+require('dotenv').config();
+
 const app=express();
 
 app.use(cors({origin: "*"}));
+app.use(express.json())
 app.use(logger);
 
 app.use("/user",userRouter);
