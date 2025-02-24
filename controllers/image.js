@@ -5,8 +5,9 @@ const SftpClient = require('ssh2-sftp-client');
 
 const sftp = new SftpClient();
 const IP= process.env.IP;
-const username=process.env.username;
+const username="abishek";
 const password=process.env.password;
+
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {

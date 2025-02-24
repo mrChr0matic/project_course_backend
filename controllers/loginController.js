@@ -11,7 +11,6 @@ const userLogin = async (req,res) => {
         const body=req.body;
         if(!body.password || !body.username)
             return res.status(400).json({error: "input fields missing"});
-        console.log(JWT_SECRET)
         const user=await prisma.user.findFirst({
             where : {
                 username : body.username

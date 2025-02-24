@@ -46,7 +46,45 @@ const getCommunity = async (req,res) =>{
                         username : true
                     }
                 },
-                posts : true
+                posts : {
+                    select : {
+                        author : {
+                            select : {
+                                username : true
+                            }
+                        },
+                        createdAt : true,
+                        title : true, 
+                        content: true,
+                        image: true,
+                        upvotes: true,
+                        downvotes: true,
+                    },
+                    orderBy :{
+                        createdAt : 'desc'
+                    }
+                },
+                banner : true,
+                icon : true
+            }
+        })
+        if(communities.length==0)
+            return res.status(404).json({error : "no community found"});
+        console.log(communities)
+        return res.status(200).json(communities);
+    }
+    catch(err){
+        return res.status(400).json({error : err.message});
+    }
+}
+
+const getAllCommunity = async (req,res) =>{
+    try{
+        const body=req.body;
+        const communities = await prisma.community.findMany({
+            select : {
+                name : true,
+                id : true
             }
         })
         if(communities.length==0)
@@ -58,4 +96,4 @@ const getCommunity = async (req,res) =>{
     }
 }
 
-module.exports={addCommunity,getCommunity}
+module.exports={addCommunity,getCommunity,getAllCommunity}
