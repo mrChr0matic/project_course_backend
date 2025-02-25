@@ -40,6 +40,7 @@ const getCommunity = async (req,res) =>{
             select : {
                 name : true,
                 members :true,
+                id : true,
                 owner : {
                     select :{
                         id : true,
@@ -48,6 +49,7 @@ const getCommunity = async (req,res) =>{
                 },
                 posts : {
                     select : {
+                        id : true,
                         author : {
                             select : {
                                 username : true

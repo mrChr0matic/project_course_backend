@@ -5,11 +5,11 @@ const userVote = async (req, res) => {
     try {
         const { postId, voteType } = req.body;
         const userId = req.user.userId;
-        console.log("here1")
+
+        console.log(postId);
 
         if (!userId || !postId || !["upvote", "downvote"].includes(voteType)) 
             return res.status(400).json({ error: "Invalid input" });
-        console.log("here2")
 
         const existingVote = await prisma.vote.findUnique({
             where: {

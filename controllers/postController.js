@@ -1,5 +1,4 @@
 const {PrismaClient}= require('@prisma/client');
-const { connect } = require('http2');
 const prisma = new PrismaClient();
 
 const addPost = async (req,res) =>{
@@ -7,6 +6,14 @@ const addPost = async (req,res) =>{
         const {title, content, communityId} = req.body;
         if(!title || !content || !communityId)
             return res.status(400).json({error : "post mandatory input fields missing"});   
+        const membership= await prisma.membership.findFirst({
+            where : {
+                userId : req.user.userId,
+                communityId 
+            }
+        })
+        if(!membership)
+            return res.status(401).json({message : "join community to post"});
         const post = await prisma.post.create({
             data : {
                 title,
