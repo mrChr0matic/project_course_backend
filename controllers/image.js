@@ -5,7 +5,7 @@ const SftpClient = require('ssh2-sftp-client');
 
 const sftp = new SftpClient();
 const IP= process.env.IP;
-const username="abishek";
+const username="ubuntu-server";
 const password=process.env.password;
 
 
